@@ -6,20 +6,10 @@
     <title>Spotify Audio Visualization</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/player.css') }}">
 </head>
-<body>
+<body onload="init()">
+    <canvas id="background-canvas"></canvas>
     <div class="container">
-        <!-- Background Pattern -->
-        <div class="background-pattern">
-            <div class="background-gradient"></div>
-        </div>
-
         <div id = "player_data" class="content">
-            <!-- Header -->
-            <div class="header">
-                <h1 class="title">Spotify Player</h1>
-                <p class="subtitle">Audio Visualization Experience</p>
-            </div>
-
             <!-- Main Player Card -->
             <div class="player-card">
                 <!-- Connection Status -->
@@ -77,5 +67,7 @@
     <script src="https://unpkg.com/meyda@5.2.1/dist/meyda.min.js"></script>
     <script src="{{ url_for('static', filename='js/player.js') }}"></script>
     <script src="{{ url_for('static', filename='js/hideplayer.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/microphone.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/audioVisualiser.js') }}"></script>
 </body>
 </html>

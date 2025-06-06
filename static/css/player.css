@@ -2,14 +2,27 @@
 * {
     margin: 0;
     padding: 0;
+
     box-sizing: border-box;
+    overflow: hidden;
 }
 
 body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
     color: white;
     min-height: 100vh;
-    background: linear-gradient(to bottom right, #111827, #000000, #111827);
+}
+
+#background-canvas {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  z-index: 0; /* Behind content */
+  pointer-events: none; /* Let mouse events pass through */
+  display: block;
+  background:black;
 }
 
 /* Container */
@@ -18,18 +31,6 @@ body {
     min-height: 100vh;
 }
 
-/* Background pattern */
-.background-pattern {
-    position: absolute;
-    inset: 0;
-    opacity: 0.1;
-}
-
-.background-gradient {
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(circle at 50% 50%, rgba(29, 185, 84, 0.1), transparent 50%);
-}
 
 /* Content */
 .content {
