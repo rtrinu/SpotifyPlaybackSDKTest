@@ -9,8 +9,7 @@ import urllib.parse
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
 
-CLIENT_ID= '159372d681ca4c17bcaedfd6a762f543'
-CLIENT_SECRET= '59550aa41eca4c928d430ebaed686e2f'
+
 REDIRECT_URI = 'http://127.0.0.1:5000/callbacks'
 AUTH_URL= 'https://accounts.spotify.com/authorize'
 TOKEN_URL = 'https://accounts.spotify.com/api/token'
