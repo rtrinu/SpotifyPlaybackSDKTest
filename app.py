@@ -80,6 +80,12 @@ def refresh_token():
         session['expires_at']= datetime.now().timestamp() + new_token_info['expires_in']
 
         return redirect('playback-sdk')
+    
+@app.route('/get_spotify_token')
+def get_spotify_token():
+    if 'access_token' not in session:
+        return redirect('/refresh-token')
+    return jsonify({'access_token':session['access_token']})
 
 if __name__ == '__main__':
     app.run(debug=True)
