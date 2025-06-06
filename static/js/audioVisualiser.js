@@ -1,107 +1,138 @@
-const fftSize =128;
-const microphone = new Microphone(fftSize);
-let bars = [];
-let canvas, ctx;
-
-class Bar {
-    constructor(x, y, width, height, color, index) {
-        this.x = x;
-        this.y = y;
-        this.width = width;
-        this.height = height;
-        this.color = color;
-        this.index = index;
+class AudioVisualizer {
+    constructor(canvasId, fftSize = 128) {
+        this.canvas = document.getElementById(canvasId);
+        this.ctx = this.canvas.getContext('2d');
+        this.microphone = new Microphone(fftSize);
+        this.bars = [];
+        this.angle = 0;
+        this.smoothVolume = 0;
+        this.hueRotation = 0;
+        this.animationId = null;
+        
+        this.init();
     }
-    
-    update(micInput) {
-        const sound = micInput * 1000;
-        if (sound>this.height){
-            this.height = sound;
-        }else{
-            this.height -=  this.height * 0.015;
 
+    async init() {
+        try {
+            await this.microphone.initPromise;
+            this.setupCanvas();
+            this.createBars();
+            this.startAnimation();
+            
+            // Add debug panel
+            this.addDebugPanel();
+        } catch (err) {
+            console.error('Visualizer initialization failed:', err);
         }
     }
-        draw(context, volume) {
-        context.strokeStyle = this.color;
-        context.save();
-        context.translate(0,0);
-        context.rotate(this.index * 0.3);
-        context.scale(1+ volume* 0.002,1 + volume * 0.002);
 
-        //Centre Path
-        context.beginPath();
-        context.moveTo(0,0);
-        context.lineTo(0,this.height);
-        //context.stroke();
-        //context.bezierCurveTo(0,0,this.height,this.height,this.x,this.y);
-        //context.rotate(this.index * -0.1);
+    setupCanvas() {
+        const resize = () => {
+            this.canvas.width = window.innerWidth;
+            this.canvas.height = window.innerHeight;
+            this.createBars(); // Recreate bars on resize
+        };
+        
+        resize();
+        window.addEventListener('resize', resize);
+    }
 
-        //rectangle Path
-        context.strokeRect(this.y, this.y, this.height, this.height);
+    createBars() {
+        this.bars = [];
+        const barCount = this.microphone.fftSize / 2;
+        const maxDimension = Math.max(this.canvas.width, this.canvas.height);
+        
+        for (let i = 0; i < barCount; i++) {
+            this.bars.push({
+                x: 0,
+                y: 0,
+                width: 2,
+                height: 1,
+                color: `hsl(${(i * 360 / barCount) % 360}, 100%, 50%)`,
+                index: i,
+                targetHeight: 1
+            });
+        }
+    }
 
-        //circle Path
-        context.beginPath();
-        context.arc(this.x + this.index*-1.5, this.y, this.height * 0.1, 0, Math.PI * 2);
-        context.stroke()
-        context.restore();
+    startAnimation() {
+        if (this.animationId) cancelAnimationFrame(this.animationId);
+        
+        const animate = () => {
+            this.ctx.clearRect(0, 0, this.canvas.width, this.canvas.height);
+            
+            const samples = this.microphone.getSamples();
+            const volume = this.microphone.getVolume();
+            this.smoothVolume = this.smoothVolume * 0.9 + volume * 0.1;
+            
+            this.ctx.save();
+            this.ctx.translate(this.canvas.width / 2, this.canvas.height / 2);
+            this.angle += 0.0005 + this.smoothVolume * 0.3;
+            this.ctx.rotate(this.angle);
+            
+            this.bars.forEach((bar, i) => {
+                // Update bar properties
+                const soundValue = samples[i] || this.smoothVolume;
+                bar.targetHeight = Math.max(1, Math.abs(soundValue) * 300);
+                bar.height = bar.height * 0.7 + bar.targetHeight * 0.3;
+                
+                // Draw bar
+                this.ctx.save();
+                this.ctx.rotate((i / this.bars.length) * Math.PI * 2);
+                this.ctx.translate(50 + this.smoothVolume * 5, 0);
+                
+                // Dynamic color based on volume
+                const hue = (this.hueRotation + i * 360 / this.bars.length) % 360;
+                this.ctx.fillStyle = `hsla(${hue}, 100%, 50%, ${0.2 + this.smoothVolume * 0.8})`;
+                
+                // Draw shape
+                this.ctx.fillRect(0, -bar.height/2, bar.width, bar.height);
+                
+                this.ctx.restore();
+            });
+            
+            this.ctx.restore();
+            this.hueRotation = (this.hueRotation + 0.5) % 360;
+            this.animationId = requestAnimationFrame(animate);
+        };
+        
+        animate();
+    }
+
+    addDebugPanel() {
+        const panel = document.createElement('div');
+        panel.style.position = 'fixed';
+        panel.style.bottom = '10px';
+        panel.style.left = '10px';
+        panel.style.backgroundColor = 'rgba(0,0,0,0.7)';
+        panel.style.color = 'white';
+        panel.style.padding = '10px';
+        panel.style.borderRadius = '5px';
+        panel.style.zIndex = '100';
+        
+        const volumeText = document.createElement('div');
+        const statusText = document.createElement('div');
+        
+        panel.appendChild(statusText);
+        panel.appendChild(volumeText);
+        document.body.appendChild(panel);
+        
+        // Update debug info periodically
+        setInterval(() => {
+            statusText.textContent = `Status: ${this.microphone.initialized ? 'Active' : 'Inactive'}`;
+            volumeText.textContent = `Volume: ${this.smoothVolume.toFixed(4)}`;
+        }, 100);
+    }
+
+    stop() {
+        if (this.animationId) cancelAnimationFrame(this.animationId);
+        this.microphone.stop();
     }
 }
 
-function init() {
-    const canvas = document.getElementById('background-canvas');
-    const ctx = canvas.getContext('2d');
-    resizeCanvas();
+document.addEventListener('DOMContentLoaded', () => {
+    const visualizer = new AudioVisualizer('background-canvas', 256);
     
-    createBars();
-    animate();
-    
-    window.addEventListener('resize', () => {
-        resizeCanvas();
-        createBars();
-    });
-}
-function resizeCanvas() {
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
-}
-function createBars() {
-    bars = [];
-    const barWidth = canvas.width / fftSize;
-    
-    for (let i = 0; i < fftSize; i++) {
-        const color = `hsl(${i}, 100%, 50%)`;
-        //const color = 'hsl(0, 100%, 50%)'; // Fixed color for all bars
-        bars.push(new Bar(
-            i * barWidth/2,
-            i,
-            barWidth * 0.5,
-            1,
-            color, i
-        ));
-    }
-}
-let angle = 0;
-let softVolume = 0;
-let hueRotation = 0;
-function animate() {
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    
-    const samples = microphone.getSamples();
-    const volume = microphone.getVolume();
-    angle += 0.0001 + softVolume*0.3; // Increment angle for rotation
-    ctx.save();
-    ctx.translate(canvas.width / 2, canvas.height / 2);
-    ctx.rotate(angle*0.5 + softVolume * 0.01); // Apply rotation based on angle and volume
-    bars.forEach((bar, i) => {
-        bar.update(samples[i] || softVolume);
-        //bar.color = `hsl(${(i + hueRotation) % 360}, 100%, 50%)`;
-        bar.draw(ctx, softVolume*0.4);
-    });
-    ctx.restore();
-    softVolume = softVolume * 0.90 + volume * 0.1; // Smooth volume transition
-    
-    requestAnimationFrame(animate);
-}
-
-window.addEventListener('load', init);
+    // Expose for debugging
+    window.visualizer = visualizer;
+});
