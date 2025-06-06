@@ -39,7 +39,8 @@ function updateConnectionStatus(status, connected) {
     }
 
     connectionText.textContent = status;
-    connectionStatus.className = connected ? "connected" : "disconnected";
+    connectionStatus.classList.remove("connected", "disconnected");
+    connectionStatus.classList.add(connected ? "connected" : "disconnected");
     console.log(`Spotify Connection Status: ${status}`);
 
     if (!connected && status.includes("Error")) {
@@ -77,15 +78,15 @@ function updateConnectionStatus(status, connected) {
         dataArray = new Uint8Array(bufferLength);
 
         const player = new Spotify.Player({
-          name: "Web Playback SDK",
+          name: "Rohan's Spotify Player",
           getOAuthToken: cb => cb(token),
           volume: 0.5,
         });
 
         player.addListener("ready", ({ device_id }) => {
-          updateConnectionStatus("Connected to Spotify", true);
+          updateConnectionStatus("Connect to Spotify", true);
           connectionIcon.innerHTML = icons.wifi;
-          deviceNameElement.textContent = "Web Playback SDK";
+          deviceNameElement.textContent = "Rohan's Spotify Player";
 
           player.getCurrentState().then(state => {
             if (!state) {
