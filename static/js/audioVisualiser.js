@@ -80,6 +80,7 @@ class AudioVisualizer {
                 this.ctx.save();
                 this.ctx.rotate((i / this.bars.length) * Math.PI * 2);
                 this.ctx.translate(50 + this.smoothVolume * 5, 0);
+                this.ctx.scale(1+ volume* 0.002,1 + volume * 0.002);
                 
                 // Dynamic color based on volume
                 const hue = (this.hueRotation + i * 360 / this.bars.length) % 360;
@@ -87,7 +88,9 @@ class AudioVisualizer {
                 
                 // Draw shape
                 this.ctx.fillRect(0, -bar.height/2, bar.width, bar.height);
-                
+                this.ctx.beginPath();
+                this.ctx.arc(this.x + this.index*-1.5, this.y, this.height * 0.1, 0, Math.PI * 2);
+                this.ctx.stroke();
                 this.ctx.restore();
             });
             

@@ -66,7 +66,7 @@ class Microphone {
         if (!this.initialized) return 0;
         this.analyser.getByteTimeDomainData(this.dataArray);
         const sum = this.dataArray.reduce((acc, val) => acc + Math.pow(val/128 - 1, 2), 0);
-        return Math.sqrt((sum / this.dataArray.length)*5000);
+        return Math.sqrt((sum / this.dataArray.length)*1000);
     }
 
     async stop() {

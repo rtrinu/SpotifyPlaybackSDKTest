@@ -5,12 +5,13 @@ import os
 from datetime import datetime
 import urllib.parse
 
+load_dotenv()
 
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
 
-CLIENT_ID= '159372d681ca4c17bcaedfd6a762f543'
-CLIENT_SECRET= '59550aa41eca4c928d430ebaed686e2f'
+CLIENT_ID = os.getenv("CLIENT_ID")
+CLIENT_SECRET = os.getenv("CLIENT_SECRET")
 REDIRECT_URI = 'http://127.0.0.1:5000/callbacks'
 AUTH_URL= 'https://accounts.spotify.com/authorize'
 TOKEN_URL = 'https://accounts.spotify.com/api/token'
