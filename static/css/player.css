@@ -40,6 +40,16 @@ body {
     padding: 2rem 1rem;
 }
 
+#player_data {
+  opacity: 1;
+  transition: opacity 0.5s ease; 
+}
+
+#player_data.hidden{
+    opacity: 0;
+    pointer-events: none;
+}
+
 /* Header */
 .header {
     text-align: center;

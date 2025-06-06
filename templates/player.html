@@ -13,7 +13,7 @@
             <div class="background-gradient"></div>
         </div>
 
-        <div class="content">
+        <div id = "player_data" class="content">
             <!-- Header -->
             <div class="header">
                 <h1 class="title">Spotify Player</h1>
@@ -65,33 +65,6 @@
                     </button>
                 </div>
             </div>
-
-            <!-- Visualization -->
-            <div class="visualization-card">
-                <div class="visualization-header">
-                    <span class="icon volume-icon">
-                        <!-- Icon will be inserted by JS -->
-                    </span>
-                    <h3 class="visualization-title">Audio Visualization</h3>
-                </div>
-
-                <div class="visualization-container">
-                    <canvas id="visualizer" class="visualizer-canvas"></canvas>
-
-                    <!-- Overlay gradient -->
-                    <div class="overlay-gradient"></div>
-
-                    <!-- Center glow effect -->
-                    <div class="center-glow">
-                        <div id="glow-effect" class="glow-effect"></div>
-                    </div>
-                </div>
-
-                <div id="visualization-status" class="visualization-status">
-                    Press play to start visualization
-                </div>
-            </div>
-
             <!-- Footer -->
             <div class="footer">
                 <p>Connect your Spotify account to start playing music</p>
@@ -103,5 +76,6 @@
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <script src="https://unpkg.com/meyda@5.2.1/dist/meyda.min.js"></script>
     <script src="{{ url_for('static', filename='js/player.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/hideplayer.js') }}"></script>
 </body>
 </html>
