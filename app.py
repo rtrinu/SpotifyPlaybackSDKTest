@@ -10,12 +10,8 @@ load_dotenv()
 app = Flask(__name__)
 app.secret_key = os.urandom(24)
 
-<<<<<<< HEAD
 CLIENT_ID = os.getenv("CLIENT_ID")
 CLIENT_SECRET = os.getenv("CLIENT_SECRET")
-=======
-
->>>>>>> f303f22464e31c0870c27190bdf3236d75b0488b
 REDIRECT_URI = 'http://127.0.0.1:5000/callbacks'
 AUTH_URL= 'https://accounts.spotify.com/authorize'
 TOKEN_URL = 'https://accounts.spotify.com/api/token'

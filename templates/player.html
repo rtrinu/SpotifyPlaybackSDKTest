@@ -5,8 +5,10 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Spotify Audio Visualization</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/player.css') }}">
+    <script src="{{ url_for('static', filename='js/microphone.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/audioVisualiser.js') }}"></script>
 </head>
-<body onload="init()">
+<body onload="main()">
     <canvas id="background-canvas"></canvas>
     <div class="container">
         <div id = "player_data" class="content">
@@ -67,7 +69,6 @@
     <script src="https://unpkg.com/meyda@5.2.1/dist/meyda.min.js"></script>
     <script src="{{ url_for('static', filename='js/player.js') }}"></script>
     <script src="{{ url_for('static', filename='js/hideplayer.js') }}"></script>
-        <script src="{{ url_for('static', filename='js/microphone.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/audioVisualiser.js') }}"></script>
+    
 </body>
 </html>
