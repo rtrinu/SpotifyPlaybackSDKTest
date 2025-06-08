@@ -12,6 +12,7 @@ function main(){
             this.height = height;
             this.color = color;
             this.index = index;
+            this.baseHue = index*2;
 
         }
         update(micInput){
@@ -19,51 +20,44 @@ function main(){
             if (sound > this.height){
                 this.height = sound;
             }else{
-                this.height -= this.height * 0.1
+                this.height -= this.height * 0.05
             }
+            this.baseHue = (this.baseHue + 0.2) % 360;
+            this.color = `hsl(${this.baseHue}, 100%, 50%)`;
 
         }
-        draw(ctx){
-            ctx.strokeStyle = this.color;
-            ctx.save();
-            ctx.translate(canvas.width/2, canvas.height/2);
-            ctx.rotate(this.index * 0.05); 
-            //Curvy abstract centre
-            /*
-            ctx.beginPath();
-            ctx.moveTo(0,0);
-            ctx.lineTo(0, this.height);
-            ctx.stroke();*/
+        draw(context, volume){
+            context.strokeStyle = this.color;
+            context.save();
+            context.translate(0,0);
+            context.rotate(this.index * 0.3);
+            context.scale(1+ volume* 0.002,1 + volume * 0.002);
 
-            //Big circle hole abstract 
-            /*
-            ctx.beginPath();
-            ctx.moveTo(this.x,this.y);
-            ctx.lineTo(this.y, this.height);
-            ctx.stroke();
-            */
-           //Spiral Abstract
-            ctx.beginPath();
-            ctx.moveTo(this.x,this.y);
-            ctx.lineTo(this.y, this.height);
-            ctx.stroke();
+            //Centre Path
+            context.beginPath();
+            context.moveTo(0,0);
+            context.lineTo(0,this.height);
+            //context.stroke();
+            //context.bezierCurveTo(0,0,this.height,this.height,this.x,this.y);
+            //context.rotate(this.index * -0.1);
 
-            //Rectangles
-            ctx.strokeRect(this.y,this.y,this.height/2, 5)
+            //rectangle Path
+            context.strokeRect(this.y, this.y, this.height, this.height);
 
-
-
-
-
-            ctx.restore();
+            //circle Path
+            context.beginPath();
+            context.arc(this.x + this.index*-1.5, this.y, this.height * 0.1, 0, Math.PI * 2);
+            context.stroke()
+            context.restore();
         }
     }
-    
-    const microphone = new Microphone(512);
+    const FFTSIZE = 256;
+    const BARS = FFTSIZE/2
+    const microphone = new Microphone(FFTSIZE);
     let bars = [];
-    let barWidth = canvas.width/256;
+    let barWidth = canvas.width/BARS;
     function createBars(){
-        for(let i = 0; i <256; i++){
+        for(let i = 0; i <BARS; i++){
             let color = 'hsl('+i*2+',100%,50%)'
             bars.push(new Bar(
                 0, 
@@ -85,10 +79,15 @@ function main(){
             const samples = microphone.getSamples();
             const volume = microphone.getVolume();
             console.log(samples);
+            angle += 0.001 + (volume*0.005);
+            ctx.save();
+            ctx.translate(canvas.width/2, canvas.height/2 )
+            ctx.rotate(angle);
             bars.forEach(function(bar, i){
                 bar.update(samples[i]);
-                bar.draw(ctx);
-        });
+                bar.draw(ctx, volume*0.2);
+            });
+            ctx.restore();
 
         }
         
