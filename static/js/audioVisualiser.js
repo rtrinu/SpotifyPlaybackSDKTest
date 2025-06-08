@@ -15,19 +15,45 @@ function main(){
 
         }
         update(micInput){
-            this.height = micInput * 1000;
+            const sound = micInput * 1000;
+            if (sound > this.height){
+                this.height = sound;
+            }else{
+                this.height -= this.height * 0.1
+            }
 
         }
         draw(ctx){
             ctx.strokeStyle = this.color;
             ctx.save();
-
             ctx.translate(canvas.width/2, canvas.height/2);
-            ctx.rotate(this.index);
+            ctx.rotate(this.index * 0.05); 
+            //Curvy abstract centre
+            /*
             ctx.beginPath();
-            ctx.moveTo(this.x, this.height);
-            ctx.lineTo(this.x, this.y);
+            ctx.moveTo(0,0);
+            ctx.lineTo(0, this.height);
+            ctx.stroke();*/
+
+            //Big circle hole abstract 
+            /*
+            ctx.beginPath();
+            ctx.moveTo(this.x,this.y);
+            ctx.lineTo(this.y, this.height);
             ctx.stroke();
+            */
+           //Spiral Abstract
+            ctx.beginPath();
+            ctx.moveTo(this.x,this.y);
+            ctx.lineTo(this.y, this.height);
+            ctx.stroke();
+
+            //Rectangles
+            ctx.strokeRect(this.y,this.y,this.height/2, 5)
+
+
+
+
 
             ctx.restore();
         }
@@ -40,20 +66,24 @@ function main(){
         for(let i = 0; i <256; i++){
             let color = 'hsl('+i*2+',100%,50%)'
             bars.push(new Bar(
-                i * barWidth, 
-                canvas.height/2, 
+                0, 
+                i*1.5, 
                 1, 
-                20, 
+                0, 
                 color,
                 i
             ));
         }
     }
     createBars();
+    let angle = 0;
+    let softVolume = 0;
+    let hueRotation = 0;
     function animate(){
         if (microphone.initialized){
             ctx.clearRect(0,0,canvas.width, canvas.height);
             const samples = microphone.getSamples();
+            const volume = microphone.getVolume();
             console.log(samples);
             bars.forEach(function(bar, i){
                 bar.update(samples[i]);
