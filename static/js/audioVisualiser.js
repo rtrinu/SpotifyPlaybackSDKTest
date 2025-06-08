@@ -1,8 +1,17 @@
 function main(){
     const canvas = document.getElementById('background-canvas');
     const ctx = canvas.getContext('2d');
-    canvas.width = window.innerWidth;
-    canvas.height = window.innerHeight;
+    resizeCanvas();
+
+    window.addEventListener('resize',()=>{
+        resizeCanvas();
+        createBars();
+    })
+
+    function resizeCanvas(){
+        canvas.width = window.innerWidth;
+        canvas.height = window.innerHeight;
+    }
 
     class Bar{
         constructor(x,y,width,height,color, index){
@@ -96,4 +105,3 @@ function main(){
     }
     animate();
 }
-
