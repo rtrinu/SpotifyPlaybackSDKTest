@@ -69,7 +69,7 @@ function main(){
         for(let i = 0; i <BARS; i++){
             let color = 'hsl('+i*2+',100%,50%)'
             bars.push(new Bar(
-                0, 
+                i * barWidth/2, 
                 i*1.5, 
                 1, 
                 0, 
@@ -87,7 +87,6 @@ function main(){
             ctx.clearRect(0,0,canvas.width, canvas.height);
             const samples = microphone.getSamples();
             const volume = microphone.getVolume();
-            console.log(samples);
             angle += 0.001 + (volume*0.005);
             ctx.save();
             ctx.translate(canvas.width/2, canvas.height/2 )

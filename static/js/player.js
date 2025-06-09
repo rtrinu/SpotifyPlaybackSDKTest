@@ -10,6 +10,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const artistNameElement = document.getElementById("artist-name");
   const previousTrackButton = document.getElementById("previous-button");
   const nextTrackButton = document.getElementById("next-button");
+  let lastTrackId = null;
 
   let audioContext, analyser, dataArray;
     // Initialize icons (using SVG strings for simplicity)
@@ -78,7 +79,7 @@ function updateConnectionStatus(status, connected) {
         dataArray = new Uint8Array(bufferLength);
 
         const player = new Spotify.Player({
-          name: "Rohan's Spotify Player",
+          name: "Rohan's Spotify Visualiser",
           getOAuthToken: cb => cb(token),
           volume: 0.5,
         });
@@ -86,7 +87,7 @@ function updateConnectionStatus(status, connected) {
         player.addListener("ready", ({ device_id }) => {
           updateConnectionStatus("Connect to Spotify", true);
           connectionIcon.innerHTML = icons.wifi;
-          deviceNameElement.textContent = "Rohan's Spotify Player";
+          deviceNameElement.textContent = "Rohan's Spotify Visualiser";
 
           player.getCurrentState().then(state => {
             if (!state) {
@@ -120,9 +121,14 @@ function updateConnectionStatus(status, connected) {
         player.addListener("player_state_changed", state => {
           if (!state) return;
           const track = state.track_window.current_track;
+          const currentTrackId = track.id;
+          if (currentTrackId !== lastTrackId){
+            console.log("New Track Detected: ", currentTrackId);
+          
           trackNameElement.textContent = track.name;
           artistNameElement.textContent = track.artists.map(a => a.name).join(", ");
-
+          lastTrackId = currentTrackId;
+          }
           playIcon.innerHTML = state.paused ? icons.play : icons.pause;
 
           if (!state.paused) initializeVisualization();
