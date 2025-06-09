@@ -76,19 +76,19 @@ def refresh_token():
             'client_secret': CLIENT_SECRET
         }    
 
-        response = request.post(TOKEN_URL, data=req_body)
+        response = requests.post(TOKEN_URL, data=req_body)
         new_token_info = response.json()
         session['access_token'] = new_token_info['access_token']
         session['expires_at']= datetime.now().timestamp() + new_token_info['expires_in']
 
         return redirect('/playback-sdk')
     
+    
 @app.route('/get_spotify_token')
 def get_spotify_token():
-    if 'access_token' not in session:
+    if 'access_token' not in session or datetime.now().timestamp() > session.get('expires_at', 0):
         return redirect('/refresh-token')
     return jsonify({'access_token':session['access_token']})
-
 
     
 

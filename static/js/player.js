@@ -1,3 +1,4 @@
+import { fetchAudioAnalysis } from "./fetchAudioAnalysis.js";  
 document.addEventListener("DOMContentLoaded", () => {
   // DOM Elements
   const playButton = document.getElementById("play-button");
@@ -79,7 +80,7 @@ function updateConnectionStatus(status, connected) {
         dataArray = new Uint8Array(bufferLength);
 
         const player = new Spotify.Player({
-          name: "Rohan's Spotify Visualiser",
+          name: "Rohan's Spotify Visualizer",
           getOAuthToken: cb => cb(token),
           volume: 0.5,
         });
@@ -87,7 +88,7 @@ function updateConnectionStatus(status, connected) {
         player.addListener("ready", ({ device_id }) => {
           updateConnectionStatus("Connect to Spotify", true);
           connectionIcon.innerHTML = icons.wifi;
-          deviceNameElement.textContent = "Rohan's Spotify Visualiser";
+          deviceNameElement.textContent = "Rohan's Spotify Visualizer";
 
           player.getCurrentState().then(state => {
             if (!state) {

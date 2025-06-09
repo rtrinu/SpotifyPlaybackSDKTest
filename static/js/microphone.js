@@ -31,9 +31,6 @@ class Microphone {
             this.microphone.connect(this.analyser);
             this.initialized = true;
             
-            // Debug: log sample rate and other info
-            console.log(`Audio sample rate: ${this.audioContext.sampleRate}Hz`);
-            
             return this;
         } catch (err) {
             console.error('Microphone initialization failed:', err);
