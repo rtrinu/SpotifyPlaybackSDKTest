@@ -125,7 +125,6 @@ function updateConnectionStatus(status, connected) {
           const currentTrackId = track.id;
           if (currentTrackId !== lastTrackId){
             console.log("New Track Detected: ", currentTrackId);
-          
           trackNameElement.textContent = track.name;
           artistNameElement.textContent = track.artists.map(a => a.name).join(", ");
           lastTrackId = currentTrackId;

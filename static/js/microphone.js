@@ -3,8 +3,10 @@ class Microphone {
         this.initialized = false;
         this.audioContext = null;
         this.microphone = null;
-        this.analyser = null;
-        this.dataArray = null;
+        this.timeDomainAnalyser = null;
+        this.freqDomainAnalyser = null;
+        this.timeDataArray = null;
+        this.freqDataArray = null;
         this.stream = null;
         this.fftSize = fftSize;
         
@@ -24,11 +26,21 @@ class Microphone {
             
             this.audioContext = new (window.AudioContext || window.webkitAudioContext)();
             this.microphone = this.audioContext.createMediaStreamSource(this.stream);
-            this.analyser = this.audioContext.createAnalyser();
-            this.analyser.fftSize = this.fftSize;
-            this.analyser.smoothingTimeConstant = 0.8; // Smoother transitions
-            this.dataArray = new Uint8Array(this.analyser.frequencyBinCount);
-            this.microphone.connect(this.analyser);
+
+            this.timeDomainAnalyser = this.audioContext.createAnalyser();
+            this.timeDomainAnalyser.fftSize = this.fftSize;
+            this.timeDomainAnalyser.smoothingTimeConstant = 0.8;
+            this.timeDataArray = new Uint8Array(this.timeDomainAnalyser.frequencyBinCount);
+
+            this.freqDomainAnalyser = this.audioContext.createAnalyser();
+            this.freqDomainAnalyser.fftSize = this.fftSize;
+            this.freqDomainAnalyser.smoothingTimeConstant = 0.8;
+            this.freqDataArray = new Uint8Array(this.freqDomainAnalyser.frequencyBinCount);
+
+
+            this.microphone.connect(this.timeDomainAnalyser);
+            this.microphone.connect(this.freqDomainAnalyser);
+
             this.initialized = true;
             
             return this;
@@ -53,17 +65,23 @@ class Microphone {
         document.body.appendChild(errorElement);
     }
 
-    getSamples() {
-        if (!this.initialized) return new Array(this.fftSize/2).fill(0);
-        this.analyser.getByteTimeDomainData(this.dataArray);
-        return Array.from(this.dataArray).map(e => e/128 - 1);
+    getTimeDomainSamples(){
+        if(!this.initialized) return new Array(this.fftSize).fill(0);
+        this.timeDomainAnalyser.getByteTimeDomainData(this.timeDataArray);
+        return Array.from(this.timeDataArray).map(e => e /128 - 1);
     }
+    getFrequencyData() {
+        if (!this.initialized) return new Array(this.freqDomainAnalyser.frequencyBinCount).fill(0);
+        this.freqDomainAnalyser.getByteFrequencyData(this.freqDataArray);
+        return Array.from(this.freqDataArray);
+    }
+    
 
     getVolume() {
         if (!this.initialized) return 0;
-        this.analyser.getByteTimeDomainData(this.dataArray);
-        const sum = this.dataArray.reduce((acc, val) => acc + Math.pow(val/128 - 1, 2), 0);
-        return Math.sqrt((sum / this.dataArray.length)*1000);
+        this.timeDomainAnalyser.getByteTimeDomainData(this.timeDataArray);
+        const sum = this.timeDataArray.reduce((acc, val) => acc + Math.pow(val / 128 - 1, 2), 0);
+        return Math.sqrt((sum / this.timeDataArray.length) * 1000);
     }
 
     async stop() {

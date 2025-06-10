@@ -1,3 +1,6 @@
+import { autoCorrelate, PitchSmoother, normalisePitch } from './pitchDetection.js';
+
+
 function main(){
     const canvas = document.getElementById('background-canvas');
     const ctx = canvas.getContext('2d');
@@ -60,10 +63,43 @@ function main(){
             context.restore();
         }
     }
-    const FFTSIZE = 256;
+
+    class Ripple{
+        constructor(pitch, canvasWidth, canvasHeight){
+            this.x = canvasWidth / 2;
+            this.y = canvasHeight / 2;
+            this.radius = 10;
+            this.alpha = 1;
+            this.lineWidth = 0.5;
+            this.pitch = pitch;
+            this.growthRate = 2 + (pitch / 300);
+        }
+        update(){
+            this.radius += this.growthRate;
+            this.alpha -= 0.01;
+        }
+        draw(ctx){
+            if (this.alpha <= 0) return;
+            ctx.save();
+            ctx.beginPath();
+            ctx.arc(this.x, this.y, this.radius, 0, Math.PI * 2);
+            ctx.strokeStyle = `hsla(${this.pitch % 360}, 100%, 50%, ${this.alpha})`;
+            ctx.lineWidth = this.lineWidth;
+            ctx.stroke();
+            ctx.restore();
+        }
+        isAlive(){
+            return this.alpha > 0;
+        }
+    }
+
+
+    const FFTSIZE = 128;
     const BARS = FFTSIZE/2
     const microphone = new Microphone(FFTSIZE);
+    const pitchSmoother = new PitchSmoother(5);
     let bars = [];
+    let ripples = [];
     let barWidth = canvas.width/BARS;
     function createBars(){
         for(let i = 0; i <BARS; i++){
@@ -82,25 +118,54 @@ function main(){
     let angle = 0;
     let softVolume = 0;
     let hueRotation = 0;
+    
     function animate(){
         if (microphone.initialized){
             ctx.clearRect(0,0,canvas.width, canvas.height);
-            const samples = microphone.getSamples();
+            
+            
+            const samples = microphone.getTimeDomainSamples();
             const volume = microphone.getVolume();
+            const rawPitch = autoCorrelate(samples, microphone.audioContext.sampleRate);
+            pitchSmoother.add(rawPitch);
+            const smoothPitch = pitchSmoother.getAverage();
+            const normalisedPitch = normalisePitch(smoothPitch);
+            
+            let pitchThreshold = 100;
+            let pitchGap = 100;
+            let lastRipplePitch = 0;
+            
+
+            if (smoothPitch && smoothPitch > pitchThreshold &&
+                Math.abs(smoothPitch - lastRipplePitch) > pitchGap) {
+                ripples.push(new Ripple(smoothPitch, canvas.width, canvas.height));
+                lastRipplePitch = smoothPitch;
+            }
+            
             angle += 0.001 + (volume*0.005);
             ctx.save();
             ctx.translate(canvas.width/2, canvas.height/2 )
             ctx.rotate(angle);
+            
+            
             bars.forEach(function(bar, i){
                 bar.update(samples[i]);
                 bar.draw(ctx, volume*0.2);
             });
             ctx.restore();
+            ripples.forEach((ripple) => {
+                ripple.update();
+                ripple.draw(ctx);
+            });
+            ripples = ripples.filter((ripple) => ripple.isAlive());
+    }
 
-        }
+
+        
         
         requestAnimationFrame(animate)
         
     }
     animate();
 }
+main();

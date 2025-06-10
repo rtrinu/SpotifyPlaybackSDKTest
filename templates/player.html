@@ -7,9 +7,9 @@
     <link rel="stylesheet" href="{{ url_for('static', filename='css/player.css') }}">
     <link rel="icon" href="data:,">
     <script src="{{ url_for('static', filename='js/microphone.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/audioVisualiser.js') }}"></script>
+    <script type="module" src="{{ url_for('static', filename='js/audioVisualiser.js') }}"></script>
 </head>
-<body onload="main()">
+<body>
     <canvas id="background-canvas"></canvas>
     <div class="container">
         <div id = "player_data" class="content">
@@ -67,7 +67,7 @@
 
     
     <script src="https://d3js.org/d3.v7.min.js"></script>
-    <script src="https://unpkg.com/meyda@5.2.1/dist/meyda.min.js"></script>
+    <script src="https://unpkg.com/meyda/dist/web/meyda.min.js"></script>
     <script type="module" src="{{ url_for('static', filename='js/player.js') }}"></script>
     <script src="https://sdk.scdn.co/spotify-player.js"></script>
     <script src="{{ url_for('static', filename='js/hideplayer.js') }}"></script>
