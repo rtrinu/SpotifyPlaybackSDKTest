@@ -55,9 +55,3 @@ export class PitchSmoother{
         return sum / this.values.length;
     }
 }
-export function normalisePitch(pitch){
-    const minPitch = 80;
-    const maxPitch = 1500;
-    if (!pitch || pitch <= 0) return 0;
-    return Math.min(1, Math.max(0, (pitch - minPitch) / (maxPitch - minPitch)));
-}
