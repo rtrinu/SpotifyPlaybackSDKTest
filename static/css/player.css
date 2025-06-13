@@ -74,10 +74,10 @@ body {
 
 #customisationBox {
   position: fixed;
-  top: 70px;
+  top: 60px;
   right: 20px;
   width: 250px;
-  height: calc(100% - 50px); /* Full viewport height minus top offset */
+  height: auto;
   background-color: rgba(31, 41, 55, 0.5);
   backdrop-filter: blur(8px);
   border: 1px solid #374151;

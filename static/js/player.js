@@ -71,6 +71,15 @@ function updateConnectionStatus(status, connected) {
     // e.g., draw frequency data
   }
 
+  document.addEventListener("click", (event) => {
+    const isClickInsideCustomBox = customBox.contains(event.target);
+    const isClickInsideToggleButton = toggleButton.contains(event.target);
+    if (!isClickInsideCustomBox && !isClickInsideToggleButton) {
+      customBox.style.display = "none";
+      toggleButton.style.display = "inline-block";
+    }
+  });
+
   toggleButton.addEventListener("click", () => {
     toggleButton.style.display = "none";
     customBox.style.display = "block";
