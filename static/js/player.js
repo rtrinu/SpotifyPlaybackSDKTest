@@ -1,4 +1,4 @@
-import { fetchAudioAnalysis } from "./fetchAudioAnalysis.js";  
+import { updateSettings } from "./settings.js";
 document.addEventListener("DOMContentLoaded", () => {
   // DOM Elements
   const playButton = document.getElementById("play-button");
@@ -11,7 +11,14 @@ document.addEventListener("DOMContentLoaded", () => {
   const artistNameElement = document.getElementById("artist-name");
   const previousTrackButton = document.getElementById("previous-button");
   const nextTrackButton = document.getElementById("next-button");
+  const toggleButton = document.getElementById("toggleBox");
+  const customBox = document.getElementById("customBox");
+  const bgColorPicker = document.getElementById("bgColorPicker");
+  const applyButton = document.getElementById("applyChanges");
+  const canvas = document.getElementById("background-canvas");
+  const ctx = canvas.getContext("2d");
   let lastTrackId = null;
+  window.backgroundColor = "#000";
 
   let audioContext, analyser, dataArray;
     // Initialize icons (using SVG strings for simplicity)
@@ -62,6 +69,15 @@ function updateConnectionStatus(status, connected) {
     if (!audioContext || !analyser) return;
     // e.g., draw frequency data
   }
+
+  toggleButton.addEventListener("click", () => {
+    customBox.classList.toggle('open');
+  });
+
+  applyButton.addEventListener("click", () => {
+    const bgColor = document.getElementById("bgColorPicker").value;
+    updateSettings({ backgroundColor: bgColor });
+  });
 
   window.onSpotifyWebPlaybackSDKReady = () => {
     fetch("/get_spotify_token")

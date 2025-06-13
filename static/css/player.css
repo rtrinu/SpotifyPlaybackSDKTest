@@ -47,6 +47,30 @@ body {
     padding: 2rem 1rem;
    
 }
+#toggleBox {
+  position: fixed;
+  top: 20px;
+  right: 20px;
+  z-index: 1001;
+  padding: 10px 15px;
+}
+#customBox {
+  position: fixed;
+  top: 0;
+  right: -300px;
+  width: 300px;
+  height: 100%;
+  background: #f1f1f1;
+  box-shadow: -2px 0 5px rgba(0,0,0,0.2);
+  padding: 20px;
+  box-sizing: border-box;
+  transition: right 0.3s;
+  z-index: 1000;
+}
+
+#customBox.open {
+  right: 0;
+}
 
 #player_data {
   opacity: 1;

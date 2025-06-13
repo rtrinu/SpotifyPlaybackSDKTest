@@ -1,5 +1,6 @@
 import { autoCorrelate, PitchSmoother } from './pitchDetection.js';
 import { getFrequencyBands } from './frequencyBands.js';
+import { settings } from './settings.js';
 
 function main() {
     const canvas = document.getElementById('background-canvas');
@@ -163,7 +164,9 @@ function main() {
             const width = canvas.width;
             const height = canvas.height;
             frameCount++;
-            ctx.clearRect(0, 0, width, height);
+
+            ctx.fillStyle = settings.backgroundColor;
+            ctx.fillRect(0, 0, width, height);
 
             const samples = microphone.getTimeDomainSamples();
             const volume = microphone.getVolume();
@@ -186,7 +189,7 @@ function main() {
             }
 
             const freqData = microphone.getFrequencyData();
-            const { normBass, normMids, normTreble } = getFrequencyBands(freqData);
+            const { normBass, normMids, normTreble } = getFrequencyBands(freqData, microphone.audioContext.sampleRate, FFTSIZE);
 
             angle += 0.001 + (volume * 0.005);
             ctx.save();
@@ -205,7 +208,6 @@ function main() {
                 ripple.draw(ctx);
             });
             ripples = ripples.filter(r => r.isAlive());
-
             updateTrebleParticles(normTreble, width, height);
             drawTrebleParticles(ctx);
         }
