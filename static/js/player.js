@@ -11,8 +11,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const artistNameElement = document.getElementById("artist-name");
   const previousTrackButton = document.getElementById("previous-button");
   const nextTrackButton = document.getElementById("next-button");
-  const toggleButton = document.getElementById("toggleBox");
-  const customBox = document.getElementById("customBox");
+
+  const toggleButton = document.getElementById("customisationButton");
+  const customBox = document.getElementById("customisationBox");
   const bgColorPicker = document.getElementById("bgColorPicker");
   const applyButton = document.getElementById("applyChanges");
   const canvas = document.getElementById("background-canvas");
@@ -71,12 +72,15 @@ function updateConnectionStatus(status, connected) {
   }
 
   toggleButton.addEventListener("click", () => {
-    customBox.classList.toggle('open');
+    toggleButton.style.display = "none";
+    customBox.style.display = "block";
   });
 
   applyButton.addEventListener("click", () => {
     const bgColor = document.getElementById("bgColorPicker").value;
     updateSettings({ backgroundColor: bgColor });
+    customBox.style.display = "none";
+    toggleButton.style.display = "inline-block";
   });
 
   window.onSpotifyWebPlaybackSDKReady = () => {

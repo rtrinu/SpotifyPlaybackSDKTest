@@ -11,15 +11,14 @@
 </head>
 <body>
     <canvas id="background-canvas"></canvas>
-    <div class="container">
-        <!-- Customisation Box -->
-        <button id ="toggleBox"> Customise</button>
-        <div class="customBox">
+    <button id ="customisationButton"> Customise</button>
+        <div id="customisationBox" style="display: none;">
             <h2>Customisation</h2>
             <label>background Color:</label>
             <input type="color" id="bgColorPicker" >
             <button id ="applyChanges">Apply Changes</button>
         </div>
+    <div class="container">
         <div id = "player_data" class="content">
             <!-- Main Player Card -->
             <div class="player-card">
@@ -71,7 +70,6 @@
                 <p>Connect your Spotify account to start playing music</p>
             </div>
         </div>
-    </button>
 
     
     <script src="https://d3js.org/d3.v7.min.js"></script>
