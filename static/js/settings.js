@@ -3,10 +3,11 @@ export const settings = {
     smoothingFactor: 0.1,
     baseHue: 0,
     solidColor: '#ffffff',
-    rotationMultipler: 0.3,
+    rotationMultiplier: 0.003,
     colorMode: 'hue',
     defaultBaseHue: 0,
-    defaultRotationMultipler: 0.3
+    defaultRotationMultiplier: 0.3,
+    volumeRotationMultiplier: 0.003,
 };
 
 export function updateSettings(newSettings) {

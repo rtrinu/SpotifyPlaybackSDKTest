@@ -42,7 +42,7 @@ function main() {
             this.baseHue = settings.baseHue;
             this.smoothedInput = 0;
             this.smoothingFactor = settings.smoothingFactor;
-            this.rotation = index * settings.rotationMultipler;
+            this.rotation = settings.rotationMultiplier;
         }
 
         update(input) {
@@ -50,7 +50,7 @@ function main() {
 
             if (settings.colorMode === 'hue'){
                 this.baseHue = (this.baseHue + 0.2) % 360;
-                this.rotation = this.index * settings.rotationMultipler;
+                this.rotation = this.index * settings.rotationMultiplier;
                 this.solidColor = null;
             }else{
                 this.solidColor = settings.solidColor;
@@ -73,7 +73,7 @@ function main() {
             if (settings.colorMode === 'hue') {
                 context.strokeStyle = `hsl(${this.baseHue}, 100%, 50%)`;
             } else {
-                context.strokeStyle = this.solidColor || settings.solidColor;
+                context.strokeStyle = this.solidColor;
             }
             
             context.lineWidth = 0.5;
@@ -207,13 +207,15 @@ function main() {
             const freqData = microphone.getFrequencyData();
             const { normBass, normMids, normTreble } = getFrequencyBands(freqData, microphone.audioContext.sampleRate, FFTSIZE);
 
-            angle += 0.001 + (volume * 0.005);
+            angle += 0.0001 + (volume * 0.00005);
             ctx.save();
             ctx.translate(width / 2, height / 2);
             ctx.rotate(angle);
 
             bars.forEach((bar, i) => {
+                const barAngle = (i / BARS) * TWO_PI + angle;
                 const oscillation = Math.sin(i * 0.3 + angle * 10) * 0.1;
+                ctx.rotate(barAngle);
                 bar.update(normBass + oscillation);
                 bar.draw(ctx, normMids);
             });

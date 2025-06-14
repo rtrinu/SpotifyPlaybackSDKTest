@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const canvas = document.getElementById("background-canvas");
   const ctx = canvas.getContext("2d");
   const smoothing = document.getElementById("smoothing");
-  const baseHue = document.getElementById("hue");
+  const rotationSpeed = document.getElementById("rotationSpeed");
   const colorModeInputs = document.getElementsByName("colorMode");
   const hueControls = document.getElementById("hueControls");
   const solidColorControls = document.getElementById("solidColorControls");
@@ -91,6 +91,12 @@ function updateConnectionStatus(status, connected) {
     updateSettings({ smoothing: parseFloat(event.target.value) });
   });
 
+  rotationSpeed.addEventListener("input", (event) => {
+    updateSettings({ rotationSpeed: parseFloat(event.target.value) });
+  });
+
+
+
 
   toggleButton.addEventListener("click", () => {
     toggleButton.style.display = "none";
@@ -117,12 +123,13 @@ function updateConnectionStatus(status, connected) {
   applyButton.addEventListener("click", () => {
     const bgColor = document.getElementById("bgColorPicker").value;
     const barSmoothing = parseFloat(smoothing.value);
+    const rotationMultiplier = parseFloat(rotationSpeed.value);
     const colorMode = document.querySelector('input[name="colorMode"]:checked').value;
     const solidColor = solidColorPicker.value;
     if (colorMode === "solid") {
-      updateSettings({ backgroundColor: bgColor, smoothingFactor: barSmoothing, colorMode, solidColor });
+      updateSettings({ backgroundColor: bgColor, smoothingFactor: barSmoothing, rotationMultiplier: rotationMultiplier, colorMode, solidColor });
     } else {
-      updateSettings({ backgroundColor: bgColor, smoothingFactor: barSmoothing, colorMode });
+      updateSettings({ backgroundColor: bgColor, smoothingFactor: barSmoothing, rotationMultiplier: rotationMultiplier, colorMode });
     }
 customBox.style.display = "none";
     toggleButton.style.display = "inline-block";
