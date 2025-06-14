@@ -17,8 +17,16 @@
             <h2>Customisation</h2>
             <label>Bar Smoothing: </label>
             <input type="range" id="smoothing" min="0" max="1" step ="0.01"value="0.1">
-            <label><input type="radio" name="colorMode" value="solid" > Solid Color</label>
-            <label><input type="radio" name="colorMode" value="hue" checked> Hue Rotation</label><label>Rotation Multiplier: </label>
+            <div class="radio-group">
+                <div class="radio-option">
+                    <input type="radio" id="opt1"name="colorMode" value="solid" >
+                    <label for="opt1">Solid Color</label>
+                </div>
+                <div class="radio-option">
+                    <input class = "radio-option" id = "opt2" type="radio" name="colorMode" value="hue" checked>
+                    <label for="opt2">Hue Rotation</label>
+                </div>
+            </div>
             <div id="hueControls" style="display: none;">
                 <label>Base Hue</label>
                 <input id="baseHue" type="range" min="0" max="360" value="0">
