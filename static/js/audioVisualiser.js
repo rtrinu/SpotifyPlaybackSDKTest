@@ -51,11 +51,11 @@ function main() {
             if (settings.colorMode === 'hue'){
                 this.baseHue = (this.baseHue + 0.2) % 360;
                 this.rotation = this.index * settings.rotationMultipler;
+                this.solidColor = null;
             }else{
-                this.baseHue = settings.defaultBaseHue;
+                this.solidColor = settings.solidColor;
             }
             
-
             this.smoothedInput += (input - this.smoothedInput) * this.smoothingFactor;
             const sound = this.smoothedInput * 200;
             if (sound > this.height) {
@@ -73,7 +73,7 @@ function main() {
             if (settings.colorMode === 'hue') {
                 context.strokeStyle = `hsl(${this.baseHue}, 100%, 50%)`;
             } else {
-                context.strokeStyle = `hsl(${settings.defaultBaseHue}, 100%, 50%)`;
+                context.strokeStyle = this.solidColor || settings.solidColor;
             }
             
             context.lineWidth = 0.5;

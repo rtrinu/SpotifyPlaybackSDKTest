@@ -23,6 +23,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const colorModeInputs = document.getElementsByName("colorMode");
   const hueControls = document.getElementById("hueControls");
   const solidColorControls = document.getElementById("solidColorControls");
+  const solidColorPicker = document.getElementById("solidColorPicker");
 
   let lastTrackId = null;
   window.backgroundColor = "#000";
@@ -117,8 +118,13 @@ function updateConnectionStatus(status, connected) {
     const bgColor = document.getElementById("bgColorPicker").value;
     const barSmoothing = parseFloat(smoothing.value);
     const colorMode = document.querySelector('input[name="colorMode"]:checked').value;
-    updateSettings({ backgroundColor: bgColor, smoothingFactor: barSmoothing, colorMode: colorMode });
-    customBox.style.display = "none";
+    const solidColor = solidColorPicker.value;
+    if (colorMode === "solid") {
+      updateSettings({ backgroundColor: bgColor, smoothingFactor: barSmoothing, colorMode, solidColor });
+    } else {
+      updateSettings({ backgroundColor: bgColor, smoothingFactor: barSmoothing, colorMode });
+    }
+customBox.style.display = "none";
     toggleButton.style.display = "inline-block";
   });
 
