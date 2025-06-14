@@ -39,13 +39,23 @@ function main() {
             this.width = width;
             this.height = 0;
             this.index = index;
-            this.baseHue = index * 2;
+            this.baseHue = settings.baseHue;
             this.smoothedInput = 0;
-            this.smoothingFactor = 0.1;
-            this.rotation = index * 0.3;
+            this.smoothingFactor = settings.smoothingFactor;
+            this.rotation = index * settings.rotationMultipler;
         }
 
         update(input) {
+            this.smoothingFactor = settings.smoothingFactor;
+
+            if (settings.colorMode === 'hue'){
+                this.baseHue = (this.baseHue + 0.2) % 360;
+                this.rotation = this.index * settings.rotationMultipler;
+            }else{
+                this.baseHue = settings.defaultBaseHue;
+            }
+            
+
             this.smoothedInput += (input - this.smoothedInput) * this.smoothingFactor;
             const sound = this.smoothedInput * 200;
             if (sound > this.height) {
@@ -59,7 +69,13 @@ function main() {
 
         draw(context, normMids) {
             const scale = 1 + normMids * 0.02;
-            context.strokeStyle = `hsl(${this.baseHue}, 100%, 50%)`;
+
+            if (settings.colorMode === 'hue') {
+                context.strokeStyle = `hsl(${this.baseHue}, 100%, 50%)`;
+            } else {
+                context.strokeStyle = `hsl(${settings.defaultBaseHue}, 100%, 50%)`;
+            }
+            
             context.lineWidth = 0.5;
             context.save();
             context.rotate(this.rotation);

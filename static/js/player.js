@@ -18,6 +18,12 @@ document.addEventListener("DOMContentLoaded", () => {
   const applyButton = document.getElementById("applyChanges");
   const canvas = document.getElementById("background-canvas");
   const ctx = canvas.getContext("2d");
+  const smoothing = document.getElementById("smoothing");
+  const baseHue = document.getElementById("hue");
+  const colorModeInputs = document.getElementsByName("colorMode");
+  const hueControls = document.getElementById("hueControls");
+  const solidColorControls = document.getElementById("solidColorControls");
+
   let lastTrackId = null;
   window.backgroundColor = "#000";
 
@@ -80,17 +86,43 @@ function updateConnectionStatus(status, connected) {
     }
   });
 
+  smoothing.addEventListener("input", (event) => {
+    updateSettings({ smoothing: parseFloat(event.target.value) });
+  });
+
+
   toggleButton.addEventListener("click", () => {
     toggleButton.style.display = "none";
     customBox.style.display = "block";
   });
 
+  function updateColorModeControls() {
+    const selectedMode = document.querySelector('input[name="colorMode"]:checked').value;
+    console.log("Color mode changed to:", selectedMode);
+    if (selectedMode === "hue") {
+      hueControls.style.display = "block";
+      solidColorControls.style.display = "none";
+    } else {
+      hueControls.style.display = "none";
+      solidColorControls.style.display = "block";
+    }
+  }
+  updateColorModeControls(); // Initial call to set controls based on default mode
+  colorModeInputs.forEach(radio => {
+    radio.addEventListener("change", updateColorModeControls);
+  });
+
+
   applyButton.addEventListener("click", () => {
     const bgColor = document.getElementById("bgColorPicker").value;
-    updateSettings({ backgroundColor: bgColor });
+    const barSmoothing = parseFloat(smoothing.value);
+    const colorMode = document.querySelector('input[name="colorMode"]:checked').value;
+    updateSettings({ backgroundColor: bgColor, smoothingFactor: barSmoothing, colorMode: colorMode });
     customBox.style.display = "none";
     toggleButton.style.display = "inline-block";
   });
+
+
 
   window.onSpotifyWebPlaybackSDKReady = () => {
     fetch("/get_spotify_token")
