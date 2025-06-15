@@ -1,4 +1,4 @@
-import { updateSettings } from "./settings.js";
+import { printSettings, updateSettings } from "./settings.js";
 document.addEventListener("DOMContentLoaded", () => {
   // DOM Elements
   const playButton = document.getElementById("play-button");
@@ -120,23 +120,39 @@ function updateConnectionStatus(status, connected) {
   });
 
 
-  applyButton.addEventListener("click", () => {
-    const bgColor = document.getElementById("bgColorPicker").value;
-    const barSmoothing = parseFloat(smoothing.value);
-    const rotationMultiplier = parseFloat(rotationSpeed.value);
-    const hueSpeed = parseFloat(hueColourSpeed.value);
-    console.log("Hue Speed:", hueSpeed);
-    const colorMode = document.querySelector('input[name="colorMode"]:checked').value;
-    const solidColor = solidColorPicker.value;
-    console.log("Background Color:", bgColor);
-    if (colorMode === "solid") {
-      updateSettings({ backgroundColor: bgColor, smoothingFactor: barSmoothing, rotationMultiplier: rotationMultiplier, colorMode, solidColor, hueSpeed: hueSpeed });
-    } else {
-      updateSettings({ backgroundColor: bgColor, smoothingFactor: barSmoothing, rotationMultiplier: rotationMultiplier, colorMode, hueSpeed: hueSpeed });
-    }
-customBox.style.display = "none";
-    toggleButton.style.display = "inline-block";
-  });
+applyButton.addEventListener("click", () => {
+  const bgColor = document.getElementById("bgColorPicker").value;
+  const barSmoothing = parseFloat(smoothing.value);
+  const rotationMultiplier = parseFloat(rotationSpeed.value);
+  const hueSpeed = parseFloat(hueColourSpeed.value);
+  const colorMode = document.querySelector('input[name="colorMode"]:checked').value;
+  const solidColor = solidColorPicker.value;
+
+  const newSettings = {
+    background: {
+      color: bgColor,
+    },
+    bars: {
+      mode: colorMode,
+      hueSpeed: hueSpeed,
+      smoothingFactor: barSmoothing,
+          ...(colorMode === "solid" ? { solidColor: solidColor } : {}),
+    },
+    rotation: {
+      speed: rotationMultiplier,
+    },
+  };
+
+  if (colorMode === "solid") {
+    newSettings.bars.solidColor = solidColor;
+  }
+
+  updateSettings(newSettings);
+  printSettings();
+
+  customBox.style.display = "none";
+  toggleButton.style.display = "inline-block";
+});
 
 
 

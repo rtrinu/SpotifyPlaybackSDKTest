@@ -39,23 +39,23 @@ function main() {
             this.width = width;
             this.height = 0;
             this.index = index;
-            this.baseHue = settings.baseHue;
+            this.baseHue = settings.bars.defaultHue;
             this.smoothedInput = 0;
-            this.smoothingFactor = settings.smoothingFactor;
-            this.rotation = settings.rotationMultiplier;
-            this.colourSpeed = settings.hueSpeed;
+            this.smoothingFactor = settings.bars.smoothingFactor;
+            this.rotation = settings.rotation.speed;
+            this.colourSpeed = settings.bars.hueSpeed;
         }
 
         update(input) {
-            this.smoothingFactor = settings.smoothingFactor;
-            this.colourSpeed = settings.hueSpeed;
+            this.smoothingFactor = settings.bars.smoothingFactor;
+            this.colourSpeed = settings.bars.hueSpeed;
 
-            if (settings.colorMode === 'hue'){
+            if (settings.bars.mode === 'hue'){
                 this.baseHue = (this.baseHue + this.colourSpeed) % 360;
-                this.rotation = this.index * settings.rotationMultiplier;
+                this.rotation = this.index * settings.rotation.speed;
                 this.solidColor = null;
             }else{
-                this.solidColor = settings.solidColor;
+                this.solidColor = settings.bars.solidColor;
             }
             
             this.smoothedInput += (input - this.smoothedInput) * this.smoothingFactor;
@@ -72,7 +72,7 @@ function main() {
         draw(context, normMids) {
             const scale = 1 + normMids * 0.02;
 
-            if (settings.colorMode === 'hue') {
+            if (settings.bars.mode === 'hue') {
                 context.strokeStyle = `hsl(${this.baseHue}, 100%, 50%)`;
             } else {
                 context.strokeStyle = this.solidColor;
@@ -183,7 +183,7 @@ function main() {
             const height = canvas.height;
             frameCount++;
 
-            ctx.fillStyle = settings.backgroundColor;
+            ctx.fillStyle = settings.background.color;
             ctx.fillRect(0, 0, width, height);
 
             const samples = microphone.getTimeDomainSamples();
@@ -209,7 +209,7 @@ function main() {
             const freqData = microphone.getFrequencyData();
             const { normBass, normMids, normTreble } = getFrequencyBands(freqData, microphone.audioContext.sampleRate, FFTSIZE);
 
-            angle += (settings.rotationMultiplier * 0.05) + (volume * 0.00005);
+            angle += (settings.rotation.speed * 0.05) + (volume * 0.00005);
             ctx.save();
             ctx.translate(width / 2, height / 2);
             ctx.rotate(angle);
