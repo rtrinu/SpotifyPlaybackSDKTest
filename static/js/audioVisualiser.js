@@ -209,10 +209,14 @@ function main() {
             const freqData = microphone.getFrequencyData();
             const { normBass, normMids, normTreble } = getFrequencyBands(freqData, microphone.audioContext.sampleRate, FFTSIZE);
 
-            angle += (settings.rotation.speed * 0.05) + (volume * 0.00005);
+            
             ctx.save();
             ctx.translate(width / 2, height / 2);
-            ctx.rotate(angle);
+            if(settings.rotation.speed !== 0){
+                angle += (settings.rotation.speed * 0.05) + (volume * 0.00005);
+                ctx.rotate(angle);
+            }
+            
 
             bars.forEach((bar, i) => {
                 const barAngle = (i / BARS) * TWO_PI + angle;
