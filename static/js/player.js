@@ -25,6 +25,9 @@ document.addEventListener("DOMContentLoaded", () => {
   const solidColorControls = document.getElementById("solidColorControls");
   const solidColorPicker = document.getElementById("solidColorPicker");
   const hueColourSpeed = document.getElementById("colorCycleSpeed");
+  const smoothingValue = document.getElementById("smoothingValue");
+  const solidColorValue = document.getElementById("solidColorValue");
+  const solidColorSwatch = document.querySelector(".color-preview-swatch");
   let lastTrackId = null;
   window.backgroundColor = "#000";
 

@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Spotify Audio Visualization</title>
     <link rel="stylesheet" href="{{ url_for('static', filename='css/player.css') }}">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/customisation.css') }}">
     <link rel="icon" href="data:,">
     <script src="{{ url_for('static', filename='js/microphone.js') }}"></script>
     <script type="module" src="{{ url_for('static', filename='js/audioVisualiser.js') }}"></script>
@@ -12,36 +13,56 @@
 <body>
     <canvas id="background-canvas"></canvas>
     <div id="customise">
-    <button id ="customisationButton"> Customise</button>
+    <button class = "btn-customise" id ="customisationButton"> Customise</button>
+
         <div id="customisationBox" style="display: none;">
             <h2>Customisation</h2>
-            <label>Bar Smoothing: </label>
-            <input type="range" id="smoothing" min="0.05" max="0.5" step ="0.001"value="0.2">
-            <div class="radio-group">
+
+            <fieldset>
+                <legend>Bar Settings</legend>
+                <label for="smoothing">Bar Smoothing:</label>
+                <input type="range" id="smoothing" min="0.05" max="0.5" step="0.001" value="0.2">
+            </fieldset>
+
+            <fieldset>
+                <legend>Color Mode</legend>
+                <div class="radio-group">
                 <div class="radio-option">
-                    <input type="radio" id="opt1"name="colorMode" value="solid" >
+                    <input type="radio" id="opt1" name="colorMode" value="solid">
                     <label for="opt1">Solid Color</label>
                 </div>
                 <div class="radio-option">
-                    <input class = "radio-option" id = "opt2" type="radio" name="colorMode" value="hue" checked>
+                    <input id="opt2" type="radio" name="colorMode" value="hue" checked>
                     <label for="opt2">Hue Rotation</label>
                 </div>
-            </div>
-            <div id="hueControls" style="display: none;">
-                <label>Colour Cycle Speed</label>
-                <input id="colorCycleSpeed" type="range" min="0" max="1" step ="0.001" value="0.2">
-            </div>
-            <div id="solidColorControls" style="display: none;">
-                <label>Solid Color:</label>
-                <input type="color" id="solidColorPicker">
-            </div>
-            <label>Rotation Speed</label>
-                <input id="rotationSpeed" type="range" min="0" max="0.01" step ="0.001" value="0.003">
+                </div>
 
-            <label>Background Color:</label>
-            <input type="color" id="bgColorPicker" >
-            <button id ="applyChanges">Apply Changes</button>
-        </div>
+                <div id="hueControls" style="display: none;">
+                <label for="colorCycleSpeed">Colour Cycle Speed:</label>
+                <input id="colorCycleSpeed" type="range" min="0" max="1" step="0.001" value="0.2">
+                </div>
+
+                <div id="solidColorControls" style="display: none;">
+                <label for="solidColorPicker">Solid Color:</label>
+                <input type="color" id="solidColorPicker">
+                </div>
+            </fieldset>
+
+            <fieldset>
+                <legend>Rotation</legend>
+                <label for="rotationSpeed">Rotation Speed:</label>
+                <input id="rotationSpeed" type="range" min="0" max="0.01" step="0.001" value="0.003">
+            </fieldset>
+
+            <fieldset>
+                <legend>Background</legend>
+                <label for="bgColorPicker">Background Color:</label>
+                <input type="color" id="bgColorPicker">
+            </fieldset>
+
+            <button class="btn-apply" id="applyChanges">Apply Changes</button>
+            </div>
+
     </div>
     <div class="container">
         <div id = "player_data" class="content">
