@@ -8,6 +8,7 @@ export const settings = {
     defaultBaseHue: 0,
     defaultRotationMultiplier: 0.3,
     volumeRotationMultiplier: 0.003,
+    hueSpeed: 0.2,
 };
 
 export function updateSettings(newSettings) {

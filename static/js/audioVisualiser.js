@@ -43,13 +43,15 @@ function main() {
             this.smoothedInput = 0;
             this.smoothingFactor = settings.smoothingFactor;
             this.rotation = settings.rotationMultiplier;
+            this.colourSpeed = settings.hueSpeed;
         }
 
         update(input) {
             this.smoothingFactor = settings.smoothingFactor;
+            this.colourSpeed = settings.hueSpeed;
 
             if (settings.colorMode === 'hue'){
-                this.baseHue = (this.baseHue + 0.2) % 360;
+                this.baseHue = (this.baseHue + this.colourSpeed) % 360;
                 this.rotation = this.index * settings.rotationMultiplier;
                 this.solidColor = null;
             }else{
@@ -64,7 +66,7 @@ function main() {
                 this.height -= this.height * 0.05;
             }
             this.height = Math.min(Math.max(this.height, 2), 1000);
-            this.baseHue = (this.baseHue + 0.2) % 360;
+            this.baseHue = (this.baseHue + this.colourSpeed) % 360;
         }
 
         draw(context, normMids) {
@@ -207,7 +209,7 @@ function main() {
             const freqData = microphone.getFrequencyData();
             const { normBass, normMids, normTreble } = getFrequencyBands(freqData, microphone.audioContext.sampleRate, FFTSIZE);
 
-            angle += 0.0001 + (volume * 0.00005);
+            angle += (settings.rotationMultiplier * 0.05) + (volume * 0.00005);
             ctx.save();
             ctx.translate(width / 2, height / 2);
             ctx.rotate(angle);

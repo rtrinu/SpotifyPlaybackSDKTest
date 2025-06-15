@@ -24,7 +24,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const hueControls = document.getElementById("hueControls");
   const solidColorControls = document.getElementById("solidColorControls");
   const solidColorPicker = document.getElementById("solidColorPicker");
-
+  const hueColourSpeed = document.getElementById("colorCycleSpeed");
   let lastTrackId = null;
   window.backgroundColor = "#000";
 
@@ -95,8 +95,9 @@ function updateConnectionStatus(status, connected) {
     updateSettings({ rotationSpeed: parseFloat(event.target.value) });
   });
 
-
-
+  hueColourSpeed.addEventListener("input", (event) => {
+    updateSettings({ hueColourSpeed: parseFloat(event.target.value) });
+  });
 
   toggleButton.addEventListener("click", () => {
     toggleButton.style.display = "none";
@@ -105,7 +106,6 @@ function updateConnectionStatus(status, connected) {
 
   function updateColorModeControls() {
     const selectedMode = document.querySelector('input[name="colorMode"]:checked').value;
-    console.log("Color mode changed to:", selectedMode);
     if (selectedMode === "hue") {
       hueControls.style.display = "block";
       solidColorControls.style.display = "none";
@@ -124,12 +124,15 @@ function updateConnectionStatus(status, connected) {
     const bgColor = document.getElementById("bgColorPicker").value;
     const barSmoothing = parseFloat(smoothing.value);
     const rotationMultiplier = parseFloat(rotationSpeed.value);
+    const hueSpeed = parseFloat(hueColourSpeed.value);
+    console.log("Hue Speed:", hueSpeed);
     const colorMode = document.querySelector('input[name="colorMode"]:checked').value;
     const solidColor = solidColorPicker.value;
+    console.log("Background Color:", bgColor);
     if (colorMode === "solid") {
-      updateSettings({ backgroundColor: bgColor, smoothingFactor: barSmoothing, rotationMultiplier: rotationMultiplier, colorMode, solidColor });
+      updateSettings({ backgroundColor: bgColor, smoothingFactor: barSmoothing, rotationMultiplier: rotationMultiplier, colorMode, solidColor, hueSpeed: hueSpeed });
     } else {
-      updateSettings({ backgroundColor: bgColor, smoothingFactor: barSmoothing, rotationMultiplier: rotationMultiplier, colorMode });
+      updateSettings({ backgroundColor: bgColor, smoothingFactor: barSmoothing, rotationMultiplier: rotationMultiplier, colorMode, hueSpeed: hueSpeed });
     }
 customBox.style.display = "none";
     toggleButton.style.display = "inline-block";
