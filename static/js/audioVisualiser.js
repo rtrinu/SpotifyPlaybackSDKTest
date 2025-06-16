@@ -2,14 +2,15 @@ import { autoCorrelate, PitchSmoother } from './pitchDetection.js';
 import { getFrequencyBands } from './frequencyBands.js';
 import { settings } from './settings.js';
 
-function main() {
+async function main() {
     const canvas = document.getElementById('background-canvas');
     const ctx = canvas.getContext('2d');
-    const FFTSIZE = 256;
-    const BARS = FFTSIZE / 2;
+    let FFTSIZE = settings.bars.count;
+    let BARS = FFTSIZE / 2;
     const pitchSmoother = new PitchSmoother(5);
     const TWO_PI = Math.PI * 2;
-    const microphone = new Microphone(FFTSIZE);
+    let microphone = new Microphone(FFTSIZE);
+    await microphone.initPromise;
 
     let barWidth = canvas.width / BARS;
     let bars = [];
@@ -32,6 +33,28 @@ function main() {
         barWidth = canvas.width / BARS;
     }
 
+    async function updateAudioSettings() {
+        // Update BARS and FFTSIZE from current settings
+        BARS = settings.bars.count;
+        FFTSIZE = BARS * 2;
+
+        // Update barWidth based on new number of bars and canvas size
+        barWidth = canvas.width / BARS;
+
+        // Destroy old microphone if exists
+        if (microphone) {
+            microphone.stop();
+        }
+
+        // Create new microphone instance with new FFTSIZE
+        microphone = new Microphone(FFTSIZE);
+
+        // Rebuild bars array for new bar count
+        console.log(`Updating audio settings: BARS = ${BARS}, FFTSIZE = ${FFTSIZE}`);
+        createBars();
+    }
+    window.updateAudioSettings = updateAudioSettings;
+
     class Bar {
         constructor(x, y, width, index) {
             this.x = x;
@@ -44,6 +67,7 @@ function main() {
             this.smoothingFactor = settings.bars.smoothingFactor;
             this.rotation = settings.rotation.speed;
             this.colourSpeed = settings.bars.hueSpeed;
+            this.lineWidth = settings.bars.lineWidth;
         }
 
         update(input) {
@@ -70,6 +94,7 @@ function main() {
         }
 
         draw(context, normMids) {
+            this.lineWidth = settings.bars.lineWidth;
             const scale = 1 + normMids * 0.02;
 
             if (settings.bars.mode === 'hue') {
@@ -78,7 +103,7 @@ function main() {
                 context.strokeStyle = this.solidColor;
             }
             
-            context.lineWidth = 0.5;
+            context.lineWidth = this.lineWidth;
             context.save();
             context.rotate(this.rotation);
             context.scale(scale, scale);
@@ -176,9 +201,11 @@ function main() {
 
     resizeCanvas();
     createBars();
+    await updateAudioSettings();
 
     function animate() {
         if (microphone.initialized) {
+            
             const width = canvas.width;
             const height = canvas.height;
             frameCount++;

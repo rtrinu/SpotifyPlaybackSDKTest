@@ -18,16 +18,19 @@ document.addEventListener("DOMContentLoaded", () => {
   const applyButton = document.getElementById("applyChanges");
   const canvas = document.getElementById("background-canvas");
   const ctx = canvas.getContext("2d");
+  const fftSizes = [128, 256, 512, 1024];
+  const barCount = document.getElementById("barCount");
+  const fftValue = document.getElementById("fftValue");
   const smoothing = document.getElementById("smoothing");
+  const barWidth = document.getElementById("barWidth");
   const rotationSpeed = document.getElementById("rotationSpeed");
   const colorModeInputs = document.getElementsByName("colorMode");
   const hueControls = document.getElementById("hueControls");
   const solidColorControls = document.getElementById("solidColorControls");
   const solidColorPicker = document.getElementById("solidColorPicker");
   const hueColourSpeed = document.getElementById("colorCycleSpeed");
-  const smoothingValue = document.getElementById("smoothingValue");
-  const solidColorValue = document.getElementById("solidColorValue");
-  const solidColorSwatch = document.querySelector(".color-preview-swatch");
+
+
   let lastTrackId = null;
   window.backgroundColor = "#000";
 
@@ -90,16 +93,9 @@ function updateConnectionStatus(status, connected) {
     }
   });
 
-  smoothing.addEventListener("input", (event) => {
-    updateSettings({ smoothing: parseFloat(event.target.value) });
-  });
-
-  rotationSpeed.addEventListener("input", (event) => {
-    updateSettings({ rotationSpeed: parseFloat(event.target.value) });
-  });
-
-  hueColourSpeed.addEventListener("input", (event) => {
-    updateSettings({ hueColourSpeed: parseFloat(event.target.value) });
+  barCount.addEventListener("input", (event) => {
+    const selectedSize = fftSizes[barCount.value];
+    fftValue.textContent = selectedSize;
   });
 
   toggleButton.addEventListener("click", () => {
@@ -130,6 +126,8 @@ applyButton.addEventListener("click", () => {
   const hueSpeed = parseFloat(hueColourSpeed.value);
   const colorMode = document.querySelector('input[name="colorMode"]:checked').value;
   const solidColor = solidColorPicker.value;
+  const barWidthValue = parseFloat(barWidth.value);
+  const barCountValue = fftSizes[barCount.value];
 
   const newSettings = {
     background: {
@@ -139,7 +137,10 @@ applyButton.addEventListener("click", () => {
       mode: colorMode,
       hueSpeed: hueSpeed,
       smoothingFactor: barSmoothing,
-          ...(colorMode === "solid" ? { solidColor: solidColor } : {}),
+      lineWidth: barWidthValue,
+      ...(colorMode === "solid" ? { solidColor: solidColor } : {}),
+      lineWidth: barWidthValue,
+      count: barCountValue,
     },
     rotation: {
       speed: rotationMultiplier,
@@ -151,6 +152,7 @@ applyButton.addEventListener("click", () => {
   }
 
   updateSettings(newSettings);
+  window.updateAudioSettings();
   printSettings();
 
   customBox.style.display = "none";

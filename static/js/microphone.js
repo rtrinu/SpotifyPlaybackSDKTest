@@ -37,7 +37,6 @@ class Microphone {
             this.freqDomainAnalyser.smoothingTimeConstant = 0.8;
             this.freqDataArray = new Uint8Array(this.freqDomainAnalyser.frequencyBinCount);
 
-
             this.microphone.connect(this.timeDomainAnalyser);
             this.microphone.connect(this.freqDomainAnalyser);
 
@@ -45,7 +44,6 @@ class Microphone {
             
             return this;
         } catch (err) {
-            console.error('Microphone initialization failed:', err);
             this._showPermissionError();
             throw err;
         }
@@ -76,7 +74,6 @@ class Microphone {
         return Array.from(this.freqDataArray);
     }
     
-
     getVolume() {
         if (!this.initialized) return 0;
         this.timeDomainAnalyser.getByteTimeDomainData(this.timeDataArray);
