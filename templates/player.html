@@ -12,9 +12,8 @@
 </head>
 <body>
     <canvas id="background-canvas"></canvas>
-    <div id="customise">
+    
     <button class = "btn-customise" id ="customisationButton"> Customise</button>
-
         <div id="customisationBox" style="display: none;">
             <h2>Customisation</h2>
 
@@ -22,10 +21,16 @@
                 <legend>Bar Settings</legend>
                 <label for="barCount">Number of Bars: <span id="fftValue">256</span></label>
                 <input type="range" id="barCount" min="0" max="3" step="1" value="1">
-                <label for="smoothing">Bar Smoothing:</label>
+                <label for="smoothing">Bar Smoothing: </label>
                 <input type="range" id="smoothing" min="0.05" max="0.5" step="0.001" value="0.2">
-                <label for="barWidth">Bar Width:</label>
+                <label for="barWidth">Bar Width: </label>
                 <input type="range" id="barWidth" min="0.1" max="3" step="0.1" value="0.5">
+            </fieldset>
+
+            <fieldset>
+                <legend>Ripple Settings</legend>
+                <label for="rippleSens">Ripple Sensitivity: </label>
+                <input type="range" id="rippleSens" min="0" max="100" step="10" value="50">
             </fieldset>
 
             <fieldset>
@@ -35,6 +40,7 @@
                     <input type="radio" id="opt1" name="colorMode" value="solid">
                     <label for="opt1">Solid Color</label>
                 </div>
+
                 <div class="radio-option">
                     <input id="opt2" type="radio" name="colorMode" value="hue" checked>
                     <label for="opt2">Hue Rotation</label>
@@ -66,8 +72,6 @@
 
             <button class="btn-apply" id="applyChanges">Apply Changes</button>
             </div>
-
-    </div>
     <div class="container">
         <div id = "player_data" class="content">
             <!-- Main Player Card -->

@@ -17,7 +17,9 @@ export const settings = {
         smoothingFactor: 0.1,
         lineWidth: 0.5,
     },
-    ripples:{},
+    ripples:{
+        sens : 50,
+    },
     particles:{},
 };
 

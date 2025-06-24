@@ -19,7 +19,7 @@ async function main() {
     let frameCount = 0;
     let angle = 0;
     let firstRippleTriggered = false;
-    const pitchThreshold = 50;
+    const pitchThreshold = settings.ripples.sens
     const pitchGap = 50;
 
     window.addEventListener('resize', () => {
@@ -224,7 +224,7 @@ async function main() {
 
             const smoothPitch = pitchSmoother.getAverage();
             let lastRipplePitch = 0;
-            const currentThreshold = firstRippleTriggered ? pitchThreshold : 10;
+            const currentThreshold = firstRippleTriggered ? pitchThreshold: settings.ripples.sens; ;
 
             if (smoothPitch && smoothPitch > currentThreshold &&
                 Math.abs(smoothPitch - lastRipplePitch) > pitchGap) {
@@ -232,6 +232,7 @@ async function main() {
                 lastRipplePitch = smoothPitch;
                 firstRippleTriggered = true;
             }
+            console.log("Ripple Threshold:", currentThreshold)
 
             const freqData = microphone.getFrequencyData();
             const { normBass, normMids, normTreble } = getFrequencyBands(freqData, microphone.audioContext.sampleRate, FFTSIZE);

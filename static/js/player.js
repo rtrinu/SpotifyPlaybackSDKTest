@@ -23,6 +23,7 @@ document.addEventListener("DOMContentLoaded", () => {
   const fftValue = document.getElementById("fftValue");
   const smoothing = document.getElementById("smoothing");
   const barWidth = document.getElementById("barWidth");
+  const rippleSens = document.getElementById("rippleSens");
   const rotationSpeed = document.getElementById("rotationSpeed");
   const colorModeInputs = document.getElementsByName("colorMode");
   const hueControls = document.getElementById("hueControls");
@@ -128,6 +129,7 @@ applyButton.addEventListener("click", () => {
   const solidColor = solidColorPicker.value;
   const barWidthValue = parseFloat(barWidth.value);
   const barCountValue = fftSizes[barCount.value];
+  const rippleSensitivity = parseFloat(rippleSens.value);
 
   const newSettings = {
     background: {
@@ -144,6 +146,9 @@ applyButton.addEventListener("click", () => {
     },
     rotation: {
       speed: rotationMultiplier,
+    },
+    ripples: {
+      sens: rippleSensitivity,
     },
   };
 

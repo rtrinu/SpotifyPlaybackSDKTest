@@ -1,4 +1,18 @@
 /* Fieldset and Legend Styling */
+#customisationBox {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1002;
+  overflow-y: auto;
+
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+}
 #customisationBox fieldset {
   border: 1px solid #374151;
   border-radius: 0.5rem;
@@ -147,7 +161,7 @@
   cursor: pointer;
   transition: all 0.3s ease;
   position: relative;
-  overflow: hidden;
+  
 }
 
 #customisationBox input[type="color"]:hover {

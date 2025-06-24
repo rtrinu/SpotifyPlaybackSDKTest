@@ -5,11 +5,11 @@ let hideTimeout;
 function resetHidePlayer(){
     clearTimeout(hideTimeout);
     player.classList.remove("hidden");
-    customise.classList.remove("hidden");
+    //customise.classList.remove("hidden");
 
     hideTimeout = setTimeout(() => {
         player.classList.add("hidden");
-        customise.classList.add("hidden");
+        //customise.classList.add("hidden");
     }, 3000);
 }
 
