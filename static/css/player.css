@@ -1,15 +1,49 @@
+:root {
+  --color-white: #ffffff;
+  --color-black: #000000;
+  --color-transparent: transparent;
+
+  --color-text-main: var(--color-white);
+  --color-text-muted: #9ca3af;            /* subtitle, device-label, artist-name */
+  --color-text-muted-alt: #6b7280;        /* footer */
+  --color-text-green: #4ade80;            /* device-name, connection-status.connected */
+  --color-text-red: #f87171;              /* connection-status.disconnected */
+  --color-text-light: #d1d5db;            /* ghost-button text, btn-customise text */
+
+  --color-bg-black: black;
+  --color-bg-player-card: rgba(31, 41, 55, 0.5);
+  --color-bg-visualization-card: rgba(31, 41, 55, 0.3);
+  --color-bg-connection-status-connected: rgba(34, 197, 94, 0.2);
+  --color-bg-connection-status-disconnected: rgba(239, 68, 68, 0.2);
+  --color-bg-btn-customise: rgba(55, 65, 81, 0.8);
+  --color-bg-btn-customise-hover: rgba(34, 197, 94, 0.1);
+  --color-bg-ghost-button-hover: #374151;
+  --color-bg-outline-button-hover: #374151;
+
+  --color-border-player-card: #374151;
+  --color-border-outline-button: #4b5563;
+  --color-border-btn-customise: #4b5563;
+  --color-border-btn-customise-hover: #22c55e;
+
+  --color-play-button-bg: #22c55e;
+  --color-play-button-bg-hover: #16a34a;
+  --color-play-button-text: black;
+
+  --color-gradient-btn-apply-start: #22c55e;
+  --color-gradient-btn-apply-end: #16a34a;
+  --color-gradient-btn-apply-hover-start: #16a34a;
+  --color-gradient-btn-apply-hover-end: #15803d;
+}
+
 * {
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
-     
+    box-sizing: border-box; 
 }
 
 body {
     font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, 'Open Sans', 'Helvetica Neue', sans-serif;
-    color: white;
-    
-    
+    color: var(--color-text-main);
 }
 
 html, body .container{
@@ -27,7 +61,7 @@ html, body .container{
   z-index: -1;
   pointer-events: none;
   display: block;
-  background:black;
+  background: var(--color-bg-black);
 }
 
 .container {
@@ -68,7 +102,7 @@ html, body .container{
     margin-bottom: 0.5rem;
     -webkit-background-clip: text;
     background-clip: text;
-    color: transparent;
+    color: var(--color-transparent);
 }
 
 @media (min-width: 768px) {
@@ -78,25 +112,25 @@ html, body .container{
 }
 
 .subtitle {
-    color: #9ca3af;
+    color: var(--color-text-muted);
     font-size: 1.125rem;
 }
 
 .player-card, .visualization-card {
     border-radius: 0.5rem;
-    border: 1px solid #374151;
+    border: 1px solid var(--color-border-player-card);
     padding: 1.5rem;
 }
 
 .player-card {
-    background-color: rgba(31, 41, 55, 0.5);
+    background-color: var(--color-bg-player-card);
     backdrop-filter: blur(8px);
     max-width: 32rem;
     margin: 0 auto 2rem auto;
 }
 
 .visualization-card {
-    background-color: rgba(31, 41, 55, 0.3);
+    background-color: var(--color-bg-visualization-card);
     backdrop-filter: blur(8px);
     max-width: 48rem;
     margin: 0 auto;
@@ -119,13 +153,13 @@ html, body .container{
 }
 
 .connection-status.connected {
-    background-color: rgba(34, 197, 94, 0.2);
-    color: #4ade80;
+    background-color: var(--color-bg-connection-status-connected);
+    color: var(--color-text-green);
 }
 
 .connection-status.disconnected {
-    background-color: rgba(239, 68, 68, 0.2);
-    color: #f87171;
+    background-color: var(--color-bg-connection-status-disconnected);
+    color: var(--color-text-red);
 }
 
 .device-info {
@@ -135,12 +169,12 @@ html, body .container{
 
 .device-label {
     font-size: 0.875rem;
-    color: #9ca3af;
+    color: var(--color-text-muted);
     margin-bottom: 0.25rem;
 }
 
 .device-name {
-    color: #4ade80;
+    color: var(--color-text-green);
     font-weight: 500;
 }
 
@@ -156,7 +190,7 @@ html, body .container{
 }
 
 .artist-name {
-    color: #9ca3af;
+    color: var(--color-text-muted);
     font-size: 1.125rem;
 }
 
@@ -180,36 +214,36 @@ html, body .container{
 
 .ghost-button {
     background-color: transparent;
-    color: #d1d5db;
+    color: var(--color-text-light);
 }
 
 .ghost-button:hover {
-    background-color: #374151;
-    color: white;
+    background-color: var(--color-bg-ghost-button-hover);
+    color: var(--color-text-main);
 }
 
 .outline-button {
     background-color: transparent;
-    border: 1px solid #4b5563;
-    color: white;
+    border: 1px solid var(--color-border-outline-button);
+    color: var(--color-text-main);
     padding: 0.25rem 0.75rem;
     font-size: 0.875rem;
 }
 
 .outline-button:hover {
-    background-color: #374151;
+    background-color: var(--color-bg-outline-button-hover);
 }
 
 .play-button {
-    background-color: #22c55e;
-    color: black;
+    background-color: var(--color-play-button-bg);
+    color: var(--color-play-button-text);
     border-radius: 9999px;
     width: 4rem;
     height: 4rem;
 }
 
 .play-button:hover {
-    background-color: #16a34a;
+    background-color: var(--color-play-button-bg-hover);
 }
 
 .icon {
@@ -218,21 +252,21 @@ html, body .container{
 
 .footer {
     text-align: center;
-    
-    color: #6b7280;
+    color: var(--color-text-muted-alt);
     font-size: 0.875rem;
 }
+
 /* Customise Button - No Icons, Extra Top Padding */
 .btn-customise {
   position: fixed;
-  top: 30px; /* Increased from 20px to give more space */
-  right: -20px; /* Increased from 20px to give more space */
+  top: 30px;
+  right: -20px;
   z-index: 1001;
-  background: rgba(55, 65, 81, 0.8);
+  background: var(--color-bg-btn-customise);
   backdrop-filter: blur(10px);
-  color: #d1d5db;
-  padding: 0.5rem 1rem 0.5rem 1rem; /* Extra top padding */
-  border: 1px solid #4b5563;
+  color: var(--color-text-light);
+  padding: 0.5rem 1rem 0.5rem 1rem;
+  border: 1px solid var(--color-border-btn-customise);
   border-radius: 12px;
   font-size: 0.875rem;
   font-weight: 500;
@@ -245,17 +279,17 @@ html, body .container{
 }
 
 .btn-customise:hover {
-  background: rgba(34, 197, 94, 0.1);
-  border-color: #22c55e;
-  color: #22c55e;
+  background: var(--color-bg-btn-customise-hover);
+  border-color: var(--color-border-btn-customise-hover);
+  color: var(--color-text-green);
   transform: translateY(-1px);
   box-shadow: 0 4px 15px rgba(34, 197, 94, 0.2);
 }
 
 /* Apply Changes Button - No Icons */
 .btn-apply {
-  background: linear-gradient(135deg, #22c55e, #16a34a);
-  color: white;
+  background: linear-gradient(135deg, var(--color-gradient-btn-apply-start), var(--color-gradient-btn-apply-end));
+  color: var(--color-text-main);
   padding: 0.75rem 1.5rem;
   border: none;
   border-radius: 12px;
@@ -274,7 +308,7 @@ html, body .container{
 .btn-apply:hover {
   transform: translateY(-2px);
   box-shadow: 0 8px 25px rgba(34, 197, 94, 0.4);
-  background: linear-gradient(135deg, #16a34a, #15803d);
+  background: linear-gradient(135deg, var(--color-gradient-btn-apply-hover-start), var(--color-gradient-btn-apply-hover-end));
 }
 
 .btn-apply:active {
@@ -322,12 +356,11 @@ html, body .container{
   position: fixed;
   top: 50%;
   left: 50%;
-
   padding: 2rem;
   border-radius: 1rem;
   z-index: 1002;
   max-height: 90vh;
   overflow-y: auto;
   display: none;
-  color: white;
+  color: var(--color-text-main);
 }
