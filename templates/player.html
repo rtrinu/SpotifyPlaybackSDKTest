@@ -25,6 +25,30 @@
                 <input type="range" id="smoothing" min="0.05" max="0.5" step="0.001" value="0.2">
                 <label for="barWidth">Bar Width: </label>
                 <input type="range" id="barWidth" min="0.1" max="3" step="0.01" value="0.5">
+                <fieldset>
+                    <legend>Color Mode</legend>
+                    <div class="radio-group">
+                    <div class="radio-option">
+                        <input type="radio" id="opt1" name="colorMode" value="solid">
+                        <label for="opt1">Solid Color</label>
+                    </div>
+
+                    <div class="radio-option">
+                        <input id="opt2" type="radio" name="colorMode" value="hue" checked>
+                        <label for="opt2">Hue Rotation</label>
+                    </div>
+                    </div>
+
+                    <div id="hueControls" style="display: none;">
+                    <label for="colorCycleSpeed">Colour Cycle Speed:</label>
+                    <input id="colorCycleSpeed" type="range" min="0" max="1" step="0.001" value="0.2">
+                    </div>
+
+                    <div id="solidColorControls" style="display: none;">
+                    <label for="solidColorPicker">Solid Color:</label>
+                    <input type="color" id="solidColorPicker">
+                    </div>
+            </fieldset>
             </fieldset>
 
             <fieldset>
@@ -33,30 +57,7 @@
                 <input type="range" id="rippleSens" min="0" max="100" step="10" value="50">
             </fieldset>
 
-            <fieldset>
-                <legend>Color Mode</legend>
-                <div class="radio-group">
-                <div class="radio-option">
-                    <input type="radio" id="opt1" name="colorMode" value="solid">
-                    <label for="opt1">Solid Color</label>
-                </div>
 
-                <div class="radio-option">
-                    <input id="opt2" type="radio" name="colorMode" value="hue" checked>
-                    <label for="opt2">Hue Rotation</label>
-                </div>
-                </div>
-
-                <div id="hueControls" style="display: none;">
-                <label for="colorCycleSpeed">Colour Cycle Speed:</label>
-                <input id="colorCycleSpeed" type="range" min="0" max="1" step="0.001" value="0.2">
-                </div>
-
-                <div id="solidColorControls" style="display: none;">
-                <label for="solidColorPicker">Solid Color:</label>
-                <input type="color" id="solidColorPicker">
-                </div>
-            </fieldset>
 
             <fieldset>
                 <legend>Rotation</legend>
