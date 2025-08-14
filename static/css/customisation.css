@@ -10,7 +10,7 @@
 
   display: block;       /* remove flex centering */
   padding: 1rem;        /* some padding inside the sidebar */
-  background-color: rgba(17, 24, 39, 0.9); /* optional dark panel */
+  background-color: black; /* optional dark panel */
   box-shadow: 2px 0 8px rgba(0,0,0,0.3);  /* subtle shadow for depth */
 }
 
@@ -29,9 +29,9 @@
   padding: 0 0.5rem;
   text-transform: uppercase;
   letter-spacing: 0.05em;
-  background-color: rgba(31, 41, 55, 0.8);
+  background-color: black;
   border-radius: 0.25rem;
-  border: 1px solid #374151;
+  border: 1px solid rgba(31, 41, 55, 0.8);
 }
 
 /* Label Styling */
