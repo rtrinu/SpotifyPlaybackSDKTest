@@ -230,6 +230,9 @@ applyButton.addEventListener("click", () => {
             console.log("New Track Detected: ", currentTrackId);
           trackNameElement.textContent = track.name;
           artistNameElement.textContent = track.artists.map(a => a.name).join(", ");
+          const albumImageUrl = track.album.images[2]?.url || track.album.images[1]?.url;
+          document.getElementById("album-image").src = albumImageUrl;
+
           lastTrackId = currentTrackId;
           }
           playIcon.innerHTML = state.paused ? icons.play : icons.pause;
