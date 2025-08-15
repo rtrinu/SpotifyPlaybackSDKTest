@@ -130,12 +130,16 @@ async function main() {
             this.alpha = 1;
             this.lineWidth = 0.7;
             this.pitch = pitch;
-            this.growthRate = 2 + (pitch / 300);
+            this.growthRate = 1 + (pitch / 100);
+            const sensitivity = settings.ripples.sens
+            this.growthRate = Math.max(1, Math.min(this.growthRate, sensitivity / 10));
+            
         }
 
         update() {
+            const sensitivity = settings.ripples.sens;
             this.radius += this.growthRate;
-            this.alpha -= 0.01;
+            this.alpha -= 0.01 * sensitivity;
         }
 
         draw(ctx) {

@@ -10,7 +10,7 @@
 
   display: block;       /* remove flex centering */
   padding: 1rem;        /* some padding inside the sidebar */
-  background-color: black; /* optional dark panel */
+  background-color: rgba(0,0,0,0.3); /* optional dark panel */
   box-shadow: 2px 0 8px rgba(0,0,0,0.3);  /* subtle shadow for depth */
 }
 

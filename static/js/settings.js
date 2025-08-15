@@ -18,7 +18,7 @@ export const settings = {
         lineWidth: 0.5,
     },
     ripples:{
-        sens : 50,
+        sens : 0.3,
     },
     particles:{},
 };
